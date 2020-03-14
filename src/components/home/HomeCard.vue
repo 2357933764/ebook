@@ -4,29 +4,26 @@
           <div class="user-info">
             <div class="avater">
               <ImageView 
-              src="https://www.youbaobao.xyz/mpvue-res/logo.jpg"
+              :src="avatar"
               round
               height="100%"
               mode="scaleToFill"
-            />
+              />
             </div>
-            <div class="nickname">名字</div>
-            <div class="shelf-text">书架共有2本好书</div>
+            <div class="nickname">{{nickname}}</div>
+            <div class="shelf-text">书架共有{{data.num}}本好书</div>
             <div class="round-item"></div>
             <div class="shelf-text">特别精选</div>
              <div class="feedback"  @click="onFeedBackClick">反馈</div>
           </div>
           <div class="book-info">
             <div class="book-wrapper">
-              <div class="image-wrapper">
-              <ImageView src= "https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg"/>
+              <div class="image-wrapper"
+                v-for="(item, index) in bookList" :key="index"
+                @click="onBookClick(item)"
+              >
+              <ImageView :src="item.cover" />
               </div>
-              <div class="image-wrapper">
-              <ImageView src= "https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg"/>
-            </div>
-            <div class="image-wrapper">
-              <ImageView src= "https://www.youbaobao.xyz/book/res/img//EarthSciences/978-981-10-3713-9_CoverFigure.jpg"/>
-            </div>
             </div>
             
             <div class="shelf" @click="gotoShelf">书架</div>
@@ -62,10 +59,36 @@ export default {
     }
 
   },
+  mounted () {
+  },
+  // computed: {
+  //   avatar () {
+  //     return (this.data.userInfo.avatar && this.data.userInfo && this.data) || ''
+  //   },
+  //   nickname () {
+  //     return (this.data.userInfo.nickname && this.data.userInfo && this.data) || ''
+  //   },
+  //   bookList () {
+  //     return (this.data && this.data.bookList) || []
+  //   }
+  // },
+  computed: {
+    avatar () {
+      return (this.data && this.data.userInfo && this.data.userInfo.avatar) || ''
+    },
+    nickname () {
+      return (this.data && this.data.userInfo && this.data.userInfo.nickname) || ''
+    },
+    bookList () {
+      return (this.data && this.data.bookList) || []
+    }
+  },
   methods: {
     gotoShelf () {
     },
-    onBookClick () {},
+    onBookClick (book) {
+      this.$emit('onBookClick', book)
+    },
     sign () {},
     onFeedBackClick () {
       Dialog.confirm({
